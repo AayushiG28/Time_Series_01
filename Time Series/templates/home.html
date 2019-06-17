@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<script>
+var _validFileExtensions = [".csv", ".txt"]; 
+function Validate(oForm) {
+    var arrInputs = oForm.getElementsByTagName("input");
+    for (var i = 0; i < arrInputs.length; i++) {
+        var oInput = arrInputs[i];
+        if (oInput.type == "file") {
+            var sFileName = oInput.value;
+            if (sFileName.length > 0) {
+                var blnValid = false;
+                for (var j = 0; j < _validFileExtensions.length; j++) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+                if (!blnValid) {
+                    alert("Sorry, the file is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+                    return false;
+                }
+            }
+            else{
+              alert('Please uplaod a file!')
+              return false;
+            }
+        }
+    }
+    return true;
+}
+</script>
+<html>
+<head>
+<style>
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    margin-right: 25px;
+    border: 5px solid #ccc;
+    display: inline-block;
+    padding: 13px 14px;
+    cursor: pointer;
+}
+.custom-file-upload:hover {
+    color:red;
+    background-color: azure;
+    border: 5px solid #dc3545;
+    padding: 13px 14px;
+    cursor: pointer;
+}
+
+.button {
+  border-radius: 15%;
+  position: relative;
+  background-color: #4CAF50;
+  border: none;
+  font-size: 20px;
+  color: #FFFFFF;
+  padding: 10px;
+  text-align: center;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button:after {
+  content: "";
+  background: #f1f1f1;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+.button:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+</style>
+</head>
+<body>
+
+<div class="row">
+
+<fieldset class="form-group" style="width:100%;margin-top: 2%"">
+    <legend style="width: 60%" class="border-bottom mb-4 legend-heading">KINDLY UPLOAD YOUR FILE!</legend>
+    <div style="text-align: center;margin-top: 2%; margin-bottom: 3%;">
+            <form onsubmit="return Validate(this);" action="/results" method="post" enctype="multipart/form-data">
+            <label for="file-upload" class="custom-file-upload"> <span>
+            <img src="{{url_for('static', filename='upload.png')}}" alt="document upload" width="20" height="20">
+            </span>
+            </i> Upload your file here
+            </label>
+            <input id="file-upload" type="file" name="data_file"/>
+            <!-- <input type="file" name="data_file" /> -->
+            <input class="button" type="submit" />
+        </form>
+    </div>
+</fieldset>
+
+</div>
+
+<div class="row" style="margin-top: 5%">
+    <div class="column-one-third imagecss">
+        <span>
+        <img src="{{url_for('static', filename='image1.png')}}" alt="Resume Cluster" width="200" height="200">
+        </span>
+    </div>
+
+    <div class="column-one-third imagecss">
+        <span>
+        <img src="{{url_for('static', filename='images2.jpg')}}" alt="Resume Cluster" width="200" height="200">
+        </span>
+    </div>
+    <div class="column-one-third imagecss">
+        <span>
+        <img src="{{url_for('static', filename='images3.jpg')}}" alt="Resume Cluster" width="200" height="200">
+        </span>
+    </div>
+</div> 
+</body>
+</html>
+
+{% endblock content %}
